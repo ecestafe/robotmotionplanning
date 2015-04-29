@@ -555,4 +555,147 @@ void MainWindow::on_pushButton_25_clicked()
       scene.addLine(b3TRS);
       scene.addLine(b3BLS);
       scene.addLine(b3BRS);
+
+      //=============Edge Cell Points=============//
+
+      QPointF lp;
+
+      qreal b1x = mainblocks->block1.left();
+      qreal b2x = mainblocks->block2.left();
+      qreal b3x = mainblocks->block3.left();
+
+      bool isb1l = false;
+      bool isb2l = false;
+      bool isb3l = false;
+
+      if(b1x<=b2x && b1x<=b3x){
+          isb1l=true;
+      }
+      if(b2x<=b1x && b2x<=b3x){
+          isb2l=true;
+      }
+      if(b3x<=b1x && b3x<=b2x){
+          isb3l=true;
+      }
+      if(isb1l){
+          lp.setX(b1x/2);
+          lp.setY(250);
+      }
+      if(isb2l){
+          lp.setX(b2x/2);
+          lp.setY(250);
+      }
+      if(isb3l){
+          lp.setX(b3x/2);
+          lp.setY(250);
+      }
+
+      QPointF rp;
+
+      qreal b1xr = mainblocks->block1.right();
+      qreal b2xr = mainblocks->block2.right();
+      qreal b3xr = mainblocks->block3.right();
+
+      bool isb1r = false;
+      bool isb2r = false;
+      bool isb3r = false;
+
+      if(b1xr>=b2xr && b1xr>=b3xr){
+          isb1r=true;
+      }
+      if(b2xr>=b1xr && b2xr>=b3xr){
+          isb2r=true;
+      }
+      if(b3xr>=b1xr && b3xr>=b2xr){
+          isb3r=true;
+      }
+      if(isb1r){
+          rp.setX(((500-b1xr)/2)+b1xr);
+          rp.setY(250);
+      }
+      if(isb2r){
+          rp.setX(((500-b2xr)/2)+b2xr);
+          rp.setY(250);
+      }
+      if(isb3r){
+          rp.setX(((500-b3xr)/2)+b3xr);
+          rp.setY(250);
+      }
+
+      if(lp.rx() != 0){
+         QRectF ldot = QRectF(lp.rx(),lp.ry(),5,5);
+        scene.addEllipse(ldot,pen,brush);
+      }
+      if(rp.rx() !=500){
+        QRectF rdot = QRectF(rp.rx(),rp.ry(),5,5);
+        scene.addEllipse(rdot,pen,brush);
+      }
+
+      //=============Straight Cell Points=============//
+
+      if( (b1TLS.length() + mainblocks->block1.height() + b1BLS.length()) == 500){
+        if(!isb1l){
+           qreal distance1 = mainblocks->block1.left()-mainblocks->block2.right();
+           qreal distance2 = mainblocks->block1.left()-mainblocks->block3.right();
+           if(distance1<distance2){
+               distance1=((distance1/2)+mainblocks->block2.right());
+               scene.addEllipse(distance1,250,5,5,pen,brush);
+           }
+           else{
+               distance2=((distance2/2)+mainblocks->block3.right());
+               scene.addEllipse(distance2,250,5,5,pen,brush);
+           }
+        }
+      }
+      if( (b2TLS.length() + mainblocks->block2.height() + b2BLS.length()) == 500){
+          if(!isb2l){
+             qreal distance1 = mainblocks->block2.left()-mainblocks->block1.right();
+             qreal distance2 = mainblocks->block2.left()-mainblocks->block3.right();
+             if(distance1<distance2){
+                 distance1=((distance1/2)+mainblocks->block1.right());
+                 scene.addEllipse(distance1,250,5,5,pen,brush);
+             }
+             else{
+                 distance2=((distance2/2)+mainblocks->block3.right());
+                 scene.addEllipse(distance2,250,5,5,pen,brush);
+             }
+          }
+      }
+      if( (b3TLS.length() + mainblocks->block3.height() + b3BLS.length()) == 500){
+          if(!isb3l){
+             qreal distance1 = mainblocks->block3.left()-mainblocks->block2.right();
+             qreal distance2 = mainblocks->block3.left()-mainblocks->block1.right();
+             if(distance1<distance2){
+                 distance1=((distance1/2)+mainblocks->block2.right());
+                 scene.addEllipse(distance1,250,5,5,pen,brush);
+             }
+             else{
+                 distance2=((distance2/2)+mainblocks->block1.right());
+                 scene.addEllipse(distance2,250,5,5,pen,brush);
+             }
+          }
+      }
+
+      //=============Above/Below Square Cell Points=============//
+
+      if(b1TLS.length() == b1TRS.length()){
+          scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.topLeft().ry()-(b1TLS.length()/2)),5,5,pen,brush);
+      }
+      if(b1BLS.length() == b1BRS.length()){
+           scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.bottomLeft().ry()+(b1BLS.length()/2)),5,5,pen,brush);
+      }
+      if(b2TLS.length() == b2TRS.length()){
+          scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.topLeft().ry()-(b2TLS.length()/2)),5,5,pen,brush);
+      }
+      if(b2BLS.length() == b2BRS.length()){
+          scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.bottomLeft().ry()+(b2BLS.length()/2)),5,5,pen,brush);
+      }
+      if(b3TLS.length()== b3TRS.length()){
+          scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.topLeft().ry()-(b3TLS.length()/2)),5,5,pen,brush);
+      }
+      if(b3BLS.length()== b3BRS.length()){
+          scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.bottomLeft().ry()+(b3BLS.length()/2)),5,5,pen,brush);
+      }
+
+      //=============
 }
