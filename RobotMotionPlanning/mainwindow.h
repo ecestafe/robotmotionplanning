@@ -14,7 +14,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    QVector<qreal> xstore;
+    QVector<qreal> ystore;
     explicit MainWindow(QWidget *parent = 0);
+    void drawpath(qreal x, qreal y);
     ~MainWindow();
 
 private slots:
@@ -64,6 +67,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene scene;
     blocks *mainblocks;
+
 };
 
 #endif // MAINWINDOW_H

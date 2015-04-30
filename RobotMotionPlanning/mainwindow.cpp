@@ -31,6 +31,32 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+void MainWindow::drawpath(qreal x, qreal y){
+
+    QPen pen = QPen(Qt::black);
+
+    qreal shortestdist = 500;
+    qreal iter=0;
+    for(int i=0; i<xstore.size(); ++i){
+        qreal current = xstore[i];
+        if(current != x){
+            qreal comp = abs(x-current);
+            if(comp < shortestdist){
+                shortestdist=comp;
+                iter=i;
+            }
+        }
+    }
+    QLineF templine = QLineF(x,y,xstore[iter],ystore[iter]);
+    QPointF compare = templine.pointAt(.5);
+    QRectF comparerect = QRectF(compare,QSizeF(2,2));
+    //if(!mainblocks->block1.contains(comparerect) && !mainblocks->block2.contains(comparerect) && !mainblocks->block3.contains(comparerect)){
+        scene.addLine(templine,pen);
+        xstore.removeAt(iter);
+        ystore.removeAt(iter);
+    //}
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -360,7 +386,10 @@ void MainWindow::on_pushButton_25_clicked()
 {
    QBrush brush = QBrush(Qt::SolidLine);
    QPen pen = QPen(Qt::black);
-   QVector<QPointF*> pointstore(0);
+   xstore.push_back(mainblocks->point1.x());
+   ystore.push_back(mainblocks->point1.y());
+   xstore.push_back(mainblocks->point2.x());
+   ystore.push_back(mainblocks->point2.y());
 
    //==============Block 1 Grid==============//
    QLineF b1TLS;
@@ -384,11 +413,15 @@ void MainWindow::on_pushButton_25_clicked()
                 qreal tempx = (mainblocks->block2.bottomRight().rx()-mainblocks->block1.topLeft().rx())/2;
                 qreal tempy = (b1TLE.ry()-b1TLS.p1().ry())/2;
                 scene.addEllipse((mainblocks->block1.topLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+                xstore.push_back((mainblocks->block1.topLeft().rx()+tempx));
+                ystore.push_back((mainblocks->block1.topRight().ry()+tempy));
             }
             if(mainblocks->block3.contains(b1TLE)){
                 qreal tempx = (mainblocks->block3.bottomRight().rx()-mainblocks->block1.topLeft().rx())/2;
                 qreal tempy = (b1TLE.ry()-b1TLS.p1().ry())/2;
                 scene.addEllipse((mainblocks->block1.topLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+                xstore.push_back((mainblocks->block1.topLeft().rx()+tempx));
+                ystore.push_back((mainblocks->block1.topRight().ry()+tempy));
             }
             break;
         }
@@ -405,11 +438,15 @@ void MainWindow::on_pushButton_25_clicked()
                  qreal tempx = (mainblocks->block1.topRight().rx()-mainblocks->block2.bottomLeft().rx())/2;
                  qreal tempy = (b1TRE.ry()-b1TLS.p1().ry())/2;
                  scene.addEllipse((mainblocks->block2.bottomLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+                 xstore.push_back((mainblocks->block2.bottomLeft().rx()+tempx));
+                 ystore.push_back((mainblocks->block1.topRight().ry()+tempy));
              }
              if(mainblocks->block3.contains(b1TRE)){
                  qreal tempx = (mainblocks->block1.topRight().rx()-mainblocks->block3.bottomLeft().rx())/2;
                  qreal tempy = (b1TRE.ry()-b1TLS.p1().ry())/2;
                  scene.addEllipse((mainblocks->block3.bottomLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+                 xstore.push_back((mainblocks->block3.bottomLeft().rx()+tempx));
+                 ystore.push_back((mainblocks->block1.topRight().ry()+tempy));
              }
              break;
          }
@@ -469,11 +506,15 @@ void MainWindow::on_pushButton_25_clicked()
                  qreal tempx = (mainblocks->block1.bottomRight().rx()-mainblocks->block2.topLeft().rx())/2;
                  qreal tempy = (b2TLE.ry()-b2TLS.p1().ry())/2;
                  scene.addEllipse((mainblocks->block2.topLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+                 xstore.push_back((mainblocks->block2.topLeft().rx()+tempx));
+                 ystore.push_back((mainblocks->block2.topRight().ry()+tempy));
              }
              if(mainblocks->block3.contains(b2TLE)){
                  qreal tempx = (mainblocks->block3.bottomRight().rx()-mainblocks->block2.topLeft().rx())/2;
                  qreal tempy = (b2TLE.ry()-b2TLS.p1().ry())/2;
                  scene.addEllipse((mainblocks->block2.topLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+                 xstore.push_back((mainblocks->block2.topLeft().rx()+tempx));
+                 ystore.push_back((mainblocks->block2.topRight().ry()+tempy));
              }
              break;
          }
@@ -490,11 +531,15 @@ void MainWindow::on_pushButton_25_clicked()
                   qreal tempx = (mainblocks->block2.topRight().rx()-mainblocks->block1.bottomLeft().rx())/2;
                   qreal tempy = (b2TRE.ry()-b2TLS.p1().ry())/2;
                   scene.addEllipse((mainblocks->block1.bottomLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+                  xstore.push_back((mainblocks->block1.bottomLeft().rx()+tempx));
+                  ystore.push_back((mainblocks->block2.topRight().ry()+tempy));
               }
               if(mainblocks->block3.contains(b2TRE)){
                   qreal tempx = (mainblocks->block2.topRight().rx()-mainblocks->block3.bottomLeft().rx())/2;
                   qreal tempy = (b2TRE.ry()-b2TLS.p1().ry())/2;
                   scene.addEllipse((mainblocks->block3.bottomLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+                  xstore.push_back((mainblocks->block3.bottomLeft().rx()+tempx));
+                  ystore.push_back((mainblocks->block2.topRight().ry()+tempy));
               }
               break;
           }
@@ -555,11 +600,15 @@ void MainWindow::on_pushButton_25_clicked()
                   qreal tempx = (mainblocks->block1.bottomRight().rx()-mainblocks->block3.topLeft().rx())/2;
                   qreal tempy = (b3TLE.ry()-b3TLS.p1().ry())/2;
                   scene.addEllipse((mainblocks->block3.topLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+                  xstore.push_back((mainblocks->block3.topLeft().rx()+tempx));
+                  ystore.push_back((mainblocks->block3.topRight().ry()+tempy));
               }
               if(mainblocks->block2.contains(b3TLE)){
                   qreal tempx = (mainblocks->block2.bottomRight().rx()-mainblocks->block3.topLeft().rx())/2;
                   qreal tempy = (b3TLE.ry()-b3TLS.p1().ry())/2;
                   scene.addEllipse((mainblocks->block3.topLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+                  xstore.push_back((mainblocks->block3.topLeft().rx()+tempx));
+                  ystore.push_back((mainblocks->block3.topRight().ry()+tempy));
               }
               break;
           }
@@ -576,11 +625,15 @@ void MainWindow::on_pushButton_25_clicked()
                    qreal tempx = (mainblocks->block3.topRight().rx()-mainblocks->block1.bottomLeft().rx())/2;
                    qreal tempy = (b3TRE.ry()-b3TLS.p1().ry())/2;
                    scene.addEllipse((mainblocks->block1.bottomLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+                   xstore.push_back((mainblocks->block1.bottomLeft().rx()+tempx));
+                   ystore.push_back((mainblocks->block3.topRight().ry()+tempy));
                }
                if(mainblocks->block2.contains(b3TRE)){
                    qreal tempx = (mainblocks->block3.topRight().rx()-mainblocks->block2.bottomLeft().rx())/2;
                    qreal tempy = (b3TRE.ry()-b3TLS.p1().ry())/2;
                    scene.addEllipse((mainblocks->block2.bottomLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+                   xstore.push_back((mainblocks->block2.bottomLeft().rx()+tempx));
+                   ystore.push_back((mainblocks->block3.topRight().ry()+tempy));
                }
                break;
            }
@@ -687,12 +740,16 @@ void MainWindow::on_pushButton_25_clicked()
       if(lp.rx() != 0){
          QRectF ldot = QRectF(lp.rx(),lp.ry(),5,5);
          scene.addEllipse(ldot,pen,brush);
+         xstore.push_back(lp.rx());
+         ystore.push_back(lp.ry());
 
          //pointstore.append(&lp);
       }
       if(rp.rx() !=500){
         QRectF rdot = QRectF(rp.rx(),rp.ry(),5,5);
         scene.addEllipse(rdot,pen,brush);
+        xstore.push_back(rp.rx());
+        ystore.push_back(rp.ry());
         //pointstore.append(QPointF(rp.rx(),rp.ry()));
       }
 
@@ -705,11 +762,15 @@ void MainWindow::on_pushButton_25_clicked()
            if(distance1<distance2){
                distance1=((distance1/2)+mainblocks->block2.right());
                scene.addEllipse(distance1,250,5,5,pen,brush);
+               xstore.push_back(distance1);
+               ystore.push_back(250);
                //pointstore.push_back(QPointF(distance1,250));
            }
            else{
                distance2=((distance2/2)+mainblocks->block3.right());
                scene.addEllipse(distance2,250,5,5,pen,brush);
+               xstore.push_back(distance2);
+               ystore.push_back(250);
                //pointstore.push_back(QPointF(distance2,250));
            }
         }
@@ -721,11 +782,15 @@ void MainWindow::on_pushButton_25_clicked()
              if(distance1<distance2){
                  distance1=((distance1/2)+mainblocks->block1.right());
                  scene.addEllipse(distance1,250,5,5,pen,brush);
+                 xstore.push_back(distance1);
+                 ystore.push_back(250);
                  //pointstore.push_back(QPointF(distance1,250));
              }
              else{
                  distance2=((distance2/2)+mainblocks->block3.right());
                  scene.addEllipse(distance2,250,5,5,pen,brush);
+                 xstore.push_back(distance2);
+                 ystore.push_back(250);
                  //pointstore.push_back(QPointF(distance2,250));
              }
           }
@@ -737,11 +802,15 @@ void MainWindow::on_pushButton_25_clicked()
              if(distance1<distance2){
                  distance1=((distance1/2)+mainblocks->block2.right());
                  scene.addEllipse(distance1,250,5,5,pen,brush);
+                 xstore.push_back(distance1);
+                 ystore.push_back(250);
                  //pointstore.push_back(QPointF(distance1,250));
              }
              else{
                  distance2=((distance2/2)+mainblocks->block1.right());
                  scene.addEllipse(distance2,250,5,5,pen,brush);
+                 xstore.push_back(distance2);
+                 ystore.push_back(250);
                  //pointstore.push_back(QPointF(distance2,250));
              }
           }
@@ -752,35 +821,56 @@ void MainWindow::on_pushButton_25_clicked()
       if(b1TLS.length() == b1TRS.length()){
           if(mainblocks->block1.top()!=0){
             scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.topLeft().ry()-(b1TLS.length()/2)),5,5,pen,brush);
+            xstore.push_back(mainblocks->block1.center().rx());
+            ystore.push_back((mainblocks->block1.topLeft().ry()-(b1TLS.length()/2)));
           }
       }
       if(b1BLS.length() == b1BRS.length()){
           if(mainblocks->block1.bottom()!=500){
             scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.bottomLeft().ry()+(b1BLS.length()/2)),5,5,pen,brush);
+            xstore.push_back(mainblocks->block1.center().rx());
+            ystore.push_back((mainblocks->block1.bottomLeft().ry()+(b1BLS.length()/2)));
           }
       }
       if(b2TLS.length() == b2TRS.length()){
           if(mainblocks->block2.top()!=0){
             scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.topLeft().ry()-(b2TLS.length()/2)),5,5,pen,brush);
+            xstore.push_back(mainblocks->block2.center().rx());
+            ystore.push_back((mainblocks->block2.topLeft().ry()-(b2TLS.length()/2)));
           }
       }
       if(b2BLS.length() == b2BRS.length()){
           if(mainblocks->block2.bottom()!=500){
             scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.bottomLeft().ry()+(b2BLS.length()/2)),5,5,pen,brush);
+            xstore.push_back(mainblocks->block2.center().rx());
+            ystore.push_back((mainblocks->block2.bottomLeft().ry()+(b2BLS.length()/2)));
           }
       }
       if(b3TLS.length()== b3TRS.length()){
           if(mainblocks->block3.top()!=0){
             scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.topLeft().ry()-(b3TLS.length()/2)),5,5,pen,brush);
+            xstore.push_back(mainblocks->block3.center().rx());
+            ystore.push_back((mainblocks->block3.topLeft().ry()-(b3TLS.length()/2)));
           }
       }
       if(b3BLS.length()== b3BRS.length()){
           if(mainblocks->block3.bottom()){
             scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.bottomLeft().ry()+(b3BLS.length()/2)),5,5,pen,brush);
+            xstore.push_back(mainblocks->block3.center().rx());
+            ystore.push_back((mainblocks->block3.bottomLeft().ry()+(b3BLS.length()/2)));
           }
       }
 
       //=============Partial Case=============//
+      for(int i=0;i<xstore.size();++i){
+          if(xstore.size() == 2){
+              scene.addLine(xstore[0],ystore[0],xstore[1],ystore[1],pen);
+              break;
+          }
+          drawpath(xstore[i],ystore[i]);
+      }
+      xstore.clear();
+      ystore.clear();
 
 
 
