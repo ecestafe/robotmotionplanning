@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <stdio.h>
+#include <iostream>
 
 using namespace std;
 
@@ -359,6 +360,7 @@ void MainWindow::on_pushButton_25_clicked()
 {
    QBrush brush = QBrush(Qt::SolidLine);
    QPen pen = QPen(Qt::black);
+   QVector<QPointF*> pointstore(0);
 
    //==============Block 1 Grid==============//
    QLineF b1TLS;
@@ -378,6 +380,16 @@ void MainWindow::on_pushButton_25_clicked()
 
    while(true){
         if(mainblocks->block2.contains(b1TLE) || mainblocks->block3.contains(b1TLE)){
+            if(mainblocks->block2.contains(b1TLE)){
+                qreal tempx = (mainblocks->block2.bottomRight().rx()-mainblocks->block1.topLeft().rx())/2;
+                qreal tempy = (b1TLE.ry()-b1TLS.p1().ry())/2;
+                scene.addEllipse((mainblocks->block1.topLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+            }
+            if(mainblocks->block3.contains(b1TLE)){
+                qreal tempx = (mainblocks->block3.bottomRight().rx()-mainblocks->block1.topLeft().rx())/2;
+                qreal tempy = (b1TLE.ry()-b1TLS.p1().ry())/2;
+                scene.addEllipse((mainblocks->block1.topLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+            }
             break;
         }
         if(b1TLE.ry() == 0){
@@ -389,6 +401,16 @@ void MainWindow::on_pushButton_25_clicked()
 
     while(true){
          if(mainblocks->block2.contains(b1TRE) || mainblocks->block3.contains(b1TRE)){
+             if(mainblocks->block2.contains(b1TRE)){
+                 qreal tempx = (mainblocks->block1.topRight().rx()-mainblocks->block2.bottomLeft().rx())/2;
+                 qreal tempy = (b1TRE.ry()-b1TLS.p1().ry())/2;
+                 scene.addEllipse((mainblocks->block2.bottomLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+             }
+             if(mainblocks->block3.contains(b1TRE)){
+                 qreal tempx = (mainblocks->block1.topRight().rx()-mainblocks->block3.bottomLeft().rx())/2;
+                 qreal tempy = (b1TRE.ry()-b1TLS.p1().ry())/2;
+                 scene.addEllipse((mainblocks->block3.bottomLeft().rx()+tempx),(mainblocks->block1.topRight().ry()+tempy),5,5,pen,brush);
+             }
              break;
          }
          if(b1TRE.ry() == 0){
@@ -443,6 +465,16 @@ void MainWindow::on_pushButton_25_clicked()
 
     while(true){
          if(mainblocks->block1.contains(b2TLE) || mainblocks->block3.contains(b2TLE)){
+             if(mainblocks->block1.contains(b2TLE)){
+                 qreal tempx = (mainblocks->block1.bottomRight().rx()-mainblocks->block2.topLeft().rx())/2;
+                 qreal tempy = (b2TLE.ry()-b2TLS.p1().ry())/2;
+                 scene.addEllipse((mainblocks->block2.topLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+             }
+             if(mainblocks->block3.contains(b2TLE)){
+                 qreal tempx = (mainblocks->block3.bottomRight().rx()-mainblocks->block2.topLeft().rx())/2;
+                 qreal tempy = (b2TLE.ry()-b2TLS.p1().ry())/2;
+                 scene.addEllipse((mainblocks->block2.topLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+             }
              break;
          }
          if(b2TLE.ry() == 0){
@@ -454,6 +486,16 @@ void MainWindow::on_pushButton_25_clicked()
 
      while(true){
           if(mainblocks->block1.contains(b2TRE) || mainblocks->block3.contains(b2TRE)){
+              if(mainblocks->block1.contains(b2TRE)){
+                  qreal tempx = (mainblocks->block2.topRight().rx()-mainblocks->block1.bottomLeft().rx())/2;
+                  qreal tempy = (b2TRE.ry()-b2TLS.p1().ry())/2;
+                  scene.addEllipse((mainblocks->block1.bottomLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+              }
+              if(mainblocks->block3.contains(b2TRE)){
+                  qreal tempx = (mainblocks->block2.topRight().rx()-mainblocks->block3.bottomLeft().rx())/2;
+                  qreal tempy = (b2TRE.ry()-b2TLS.p1().ry())/2;
+                  scene.addEllipse((mainblocks->block3.bottomLeft().rx()+tempx),(mainblocks->block2.topRight().ry()+tempy),5,5,pen,brush);
+              }
               break;
           }
           if(b2TRE.ry() == 0){
@@ -509,6 +551,16 @@ void MainWindow::on_pushButton_25_clicked()
 
      while(true){
           if(mainblocks->block1.contains(b3TLE) || mainblocks->block2.contains(b3TLE)){
+              if(mainblocks->block1.contains(b3TLE)){
+                  qreal tempx = (mainblocks->block1.bottomRight().rx()-mainblocks->block3.topLeft().rx())/2;
+                  qreal tempy = (b3TLE.ry()-b3TLS.p1().ry())/2;
+                  scene.addEllipse((mainblocks->block3.topLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+              }
+              if(mainblocks->block2.contains(b3TLE)){
+                  qreal tempx = (mainblocks->block2.bottomRight().rx()-mainblocks->block3.topLeft().rx())/2;
+                  qreal tempy = (b3TLE.ry()-b3TLS.p1().ry())/2;
+                  scene.addEllipse((mainblocks->block3.topLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+              }
               break;
           }
           if(b3TLE.ry() == 0){
@@ -520,6 +572,16 @@ void MainWindow::on_pushButton_25_clicked()
 
       while(true){
            if(mainblocks->block1.contains(b3TRE) || mainblocks->block2.contains(b3TRE)){
+               if(mainblocks->block1.contains(b3TRE)){
+                   qreal tempx = (mainblocks->block3.topRight().rx()-mainblocks->block1.bottomLeft().rx())/2;
+                   qreal tempy = (b3TRE.ry()-b3TLS.p1().ry())/2;
+                   scene.addEllipse((mainblocks->block1.bottomLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+               }
+               if(mainblocks->block2.contains(b3TRE)){
+                   qreal tempx = (mainblocks->block3.topRight().rx()-mainblocks->block2.bottomLeft().rx())/2;
+                   qreal tempy = (b3TRE.ry()-b3TLS.p1().ry())/2;
+                   scene.addEllipse((mainblocks->block2.bottomLeft().rx()+tempx),(mainblocks->block3.topRight().ry()+tempy),5,5,pen,brush);
+               }
                break;
            }
            if(b3TRE.ry() == 0){
@@ -624,54 +686,63 @@ void MainWindow::on_pushButton_25_clicked()
 
       if(lp.rx() != 0){
          QRectF ldot = QRectF(lp.rx(),lp.ry(),5,5);
-        scene.addEllipse(ldot,pen,brush);
+         scene.addEllipse(ldot,pen,brush);
+
+         //pointstore.append(&lp);
       }
       if(rp.rx() !=500){
         QRectF rdot = QRectF(rp.rx(),rp.ry(),5,5);
         scene.addEllipse(rdot,pen,brush);
+        //pointstore.append(QPointF(rp.rx(),rp.ry()));
       }
 
-      //=============Straight Cell Points=============//
+      //=============Perfect Case Points=============//
 
       if( (b1TLS.length() + mainblocks->block1.height() + b1BLS.length()) == 500){
         if(!isb1l){
-           qreal distance1 = mainblocks->block1.left()-mainblocks->block2.right();
-           qreal distance2 = mainblocks->block1.left()-mainblocks->block3.right();
+           qreal distance1 = abs(mainblocks->block1.left()-mainblocks->block2.right());
+           qreal distance2 = abs(mainblocks->block1.left()-mainblocks->block3.right());
            if(distance1<distance2){
                distance1=((distance1/2)+mainblocks->block2.right());
                scene.addEllipse(distance1,250,5,5,pen,brush);
+               //pointstore.push_back(QPointF(distance1,250));
            }
            else{
                distance2=((distance2/2)+mainblocks->block3.right());
                scene.addEllipse(distance2,250,5,5,pen,brush);
+               //pointstore.push_back(QPointF(distance2,250));
            }
         }
       }
       if( (b2TLS.length() + mainblocks->block2.height() + b2BLS.length()) == 500){
           if(!isb2l){
-             qreal distance1 = mainblocks->block2.left()-mainblocks->block1.right();
-             qreal distance2 = mainblocks->block2.left()-mainblocks->block3.right();
+             qreal distance1 = abs(mainblocks->block2.left()-mainblocks->block1.right());
+             qreal distance2 = abs(mainblocks->block2.left()-mainblocks->block3.right());
              if(distance1<distance2){
                  distance1=((distance1/2)+mainblocks->block1.right());
                  scene.addEllipse(distance1,250,5,5,pen,brush);
+                 //pointstore.push_back(QPointF(distance1,250));
              }
              else{
                  distance2=((distance2/2)+mainblocks->block3.right());
                  scene.addEllipse(distance2,250,5,5,pen,brush);
+                 //pointstore.push_back(QPointF(distance2,250));
              }
           }
       }
       if( (b3TLS.length() + mainblocks->block3.height() + b3BLS.length()) == 500){
           if(!isb3l){
-             qreal distance1 = mainblocks->block3.left()-mainblocks->block2.right();
-             qreal distance2 = mainblocks->block3.left()-mainblocks->block1.right();
+             qreal distance1 = abs(mainblocks->block3.left()-mainblocks->block2.right());
+             qreal distance2 = abs(mainblocks->block3.left()-mainblocks->block1.right());
              if(distance1<distance2){
                  distance1=((distance1/2)+mainblocks->block2.right());
                  scene.addEllipse(distance1,250,5,5,pen,brush);
+                 //pointstore.push_back(QPointF(distance1,250));
              }
              else{
                  distance2=((distance2/2)+mainblocks->block1.right());
                  scene.addEllipse(distance2,250,5,5,pen,brush);
+                 //pointstore.push_back(QPointF(distance2,250));
              }
           }
       }
@@ -679,23 +750,38 @@ void MainWindow::on_pushButton_25_clicked()
       //=============Above/Below Square Cell Points=============//
 
       if(b1TLS.length() == b1TRS.length()){
-          scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.topLeft().ry()-(b1TLS.length()/2)),5,5,pen,brush);
+          if(mainblocks->block1.top()!=0){
+            scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.topLeft().ry()-(b1TLS.length()/2)),5,5,pen,brush);
+          }
       }
       if(b1BLS.length() == b1BRS.length()){
-           scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.bottomLeft().ry()+(b1BLS.length()/2)),5,5,pen,brush);
+          if(mainblocks->block1.bottom()!=500){
+            scene.addEllipse(mainblocks->block1.center().rx(),(mainblocks->block1.bottomLeft().ry()+(b1BLS.length()/2)),5,5,pen,brush);
+          }
       }
       if(b2TLS.length() == b2TRS.length()){
-          scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.topLeft().ry()-(b2TLS.length()/2)),5,5,pen,brush);
+          if(mainblocks->block2.top()!=0){
+            scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.topLeft().ry()-(b2TLS.length()/2)),5,5,pen,brush);
+          }
       }
       if(b2BLS.length() == b2BRS.length()){
-          scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.bottomLeft().ry()+(b2BLS.length()/2)),5,5,pen,brush);
+          if(mainblocks->block2.bottom()!=500){
+            scene.addEllipse(mainblocks->block2.center().rx(),(mainblocks->block2.bottomLeft().ry()+(b2BLS.length()/2)),5,5,pen,brush);
+          }
       }
       if(b3TLS.length()== b3TRS.length()){
-          scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.topLeft().ry()-(b3TLS.length()/2)),5,5,pen,brush);
+          if(mainblocks->block3.top()!=0){
+            scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.topLeft().ry()-(b3TLS.length()/2)),5,5,pen,brush);
+          }
       }
       if(b3BLS.length()== b3BRS.length()){
-          scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.bottomLeft().ry()+(b3BLS.length()/2)),5,5,pen,brush);
+          if(mainblocks->block3.bottom()){
+            scene.addEllipse(mainblocks->block3.center().rx(),(mainblocks->block3.bottomLeft().ry()+(b3BLS.length()/2)),5,5,pen,brush);
+          }
       }
 
-      //=============
+      //=============Partial Case=============//
+
+
+
 }
